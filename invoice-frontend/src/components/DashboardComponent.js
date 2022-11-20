@@ -187,7 +187,7 @@ useEffect( () => {
     const formData1 = new FormData();
     formData1.append("uid", localStorage.getItem("uid"));
     formData1.append("token", localStorage.getItem("token"));
-     res = await axios.post("http://127.0.0.1:5000/requests",formData1);
+     res = await axios.post("http://172.17.19.26:5000/requests",formData1);
      console.log("res",res);
      res.data.map((it,index)=>{
      
