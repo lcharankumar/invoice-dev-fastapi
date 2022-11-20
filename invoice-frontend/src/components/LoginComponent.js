@@ -30,7 +30,7 @@ const LoginComponent = (props) => {
       token:''
     } };
     console.log(formData1)
-    res = await axios.post("http://127.0.0.1:5000/login", formData1);
+    res = await axios.post("http://172.17.19.26:5000/login", formData1);
     console.log(res);
     if (res.data.message == "Success") {
       props.setLogin(true);
