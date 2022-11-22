@@ -89,7 +89,7 @@ def token_required(token:str = Body()):
 
 
 @app.post('/login')
-def login(uid:str = Form(),password:str = Form()):
+async def login(uid:str = Form(),password:str = Form()):
     uri = "mongodb+srv://digiverz:digiverz@cluster0.ngqcelw.mongodb.net/?retryWrites=true&w=majority"
     client = pymongo.MongoClient(uri)
     database = client['invoice']
@@ -118,7 +118,7 @@ def login(uid:str = Form(),password:str = Form()):
         return {"message": "Failure"}
 
 @app.post('/register')
-def data(name:str = Form(),password:str = Form(),uid:str = Form(),role:str = Form()):
+async def data(name:str = Form(),password:str = Form(),uid:str = Form(),role:str = Form()):
     uri = "mongodb+srv://digiverz:digiverz@cluster0.ngqcelw.mongodb.net/?retryWrites=true&w=majority"
     client = pymongo.MongoClient(uri)
     database = client['invoice']
@@ -128,11 +128,11 @@ def data(name:str = Form(),password:str = Form(),uid:str = Form(),role:str = For
     data['password'] = password_context.hash(password)
     data['uid'] = uid
     data['role'] = role
-    collection.insert_one(data)
+    await collection.insert_one(data)
     return "Success"
 
 @app.post('/request',dependencies=[Depends(token_required)])
-def data2(id:str = Form(),name:str = Form(),uid:str = Form(),role:str = Form(),status:str = Form(),data:str = Form()):
+async def data2(id:str = Form(),name:str = Form(),uid:str = Form(),role:str = Form(),status:str = Form(),data:str = Form()):
     uri = "mongodb+srv://digiverz:digiverz@cluster0.ngqcelw.mongodb.net/?retryWrites=true&w=majority"
     client = pymongo.MongoClient(uri)
     database = client['invoice']
@@ -144,12 +144,12 @@ def data2(id:str = Form(),name:str = Form(),uid:str = Form(),role:str = Form(),s
     data1['role'] = role
     data1['status'] = status
     data1['data'] = data
-    collection.insert_one(data1)
+    await collection.insert_one(data1)
     return "Success"
     
 
 @app.post('/requests',dependencies=[Depends(token_required)])
-def data3(uid:str = Form()):
+async def data3(uid:str = Form()):
     uri = "mongodb+srv://digiverz:digiverz@cluster0.ngqcelw.mongodb.net/?retryWrites=true&w=majority"
     client = pymongo.MongoClient(uri)
     database = client['invoice']
@@ -157,7 +157,7 @@ def data3(uid:str = Form()):
     lst = []
     uid = uid
     print(uid)
-    for x in collection1.find({"$and": [{"uid": {"$eq": uid}}]},
+    for x in await collection1.find({"$and": [{"uid": {"$eq": uid}}]},
                                 {"_id": 0, "id": 1, "name": 1, "uid": 1, "role": 1, "status": 1, "data": 1}):
         lst.append(x)
     return lst
@@ -547,5 +547,3 @@ def crop(file_input: bytes = File(),label_input: str = Form()):
     
 if __name__ == "__main__":
     uvicorn.run(app, host='0.0.0.0',port=5000)
-
-
