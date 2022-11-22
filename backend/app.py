@@ -144,7 +144,7 @@ async def data2(id:str = Form(),name:str = Form(),uid:str = Form(),role:str = Fo
     data1['role'] = role
     data1['status'] = status
     data1['data'] = data
-    await collection.insert_one(data1)
+    collection.insert_one(data1)
     return "Success"
     
 
