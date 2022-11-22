@@ -157,7 +157,7 @@ async def data3(uid:str = Form()):
     lst = []
     uid = uid
     print(uid)
-    for x in await collection1.find({"$and": [{"uid": {"$eq": uid}}]},
+    for x in collection1.find({"$and": [{"uid": {"$eq": uid}}]},
                                 {"_id": 0, "id": 1, "name": 1, "uid": 1, "role": 1, "status": 1, "data": 1}):
         lst.append(x)
     return lst
